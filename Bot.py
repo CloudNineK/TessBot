@@ -11,17 +11,7 @@ class Bot:
         self.client = client
 
         # Markov Chain
-        with open('fbChain.txt', encoding='utf-8') as f:
-            jModelA = json.load(f)
-
-        with open('discordChain.txt', encoding='utf-8') as f:
-            jModelB = json.load(f)
-
-        modelA = markovify.NewlineText.from_json(jModelA)
-        modelB = markovify.NewlineText.from_json(jModelB)
-
-        model = markovify.combine([modelA, modelB], [1.5, 1])
-        self.model = model
+        self.model = None
 
     async def sendMessage(self, channel, message, cType='group'):
         client = self.client
@@ -63,3 +53,16 @@ class Bot:
                 await send(channel, url)
             except Exception:
                 pass
+
+    async def markov(self):
+        with open('fbChain.txt', encoding='utf-8') as f:
+            jModelA = json.load(f)
+
+        with open('discordChain.txt', encoding='utf-8') as f:
+            jModelB = json.load(f)
+
+        modelA = markovify.NewlineText.from_json(jModelA)
+        modelB = markovify.NewlineText.from_json(jModelB)
+
+        model = markovify.combine([modelA, modelB], [1.5, 1])
+        self.model = model
